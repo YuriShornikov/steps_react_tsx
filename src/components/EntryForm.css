@@ -1,0 +1,35 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.trainig {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.date, .range {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.date input, .range input, .error-message {
+    height: 40px;
+}
+
+.btn {
+    height: 45px;
+    width: 80px;
+    margin-top: 34px;
+    margin-right: 0px;
+    justify-self: end;
+}
+
+.error-message {
+    color: red;
+}
