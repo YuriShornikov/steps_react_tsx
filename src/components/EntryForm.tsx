@@ -18,13 +18,22 @@ export const EntryForm: React.FC<EntryFormProps> = ({ onSubmit, editMode }) => {
         }
     }, [editMode]);
 
+    const formatDatePart = (value: number) => {
+        return value.toString().padStart(2, '0');
+    };
+
     // проверка дня от 1 до 31 и месяца от 1 до 12
     const validateDate = (date: string) => {
-        const datePattern = /^\d{2}\.\d{2}\.\d{4}$/;
-        if (!datePattern.test(date)) {
-            return 'Дата должна быть в формате ДД.ММ.ГГ';
+        const datePattern = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/;;
+        const match = date.match(datePattern);
+
+        if (!match) {
+          return 'Дата должна быть в формате ДД.ММ.ГГГГ';
         }
-        const [day, month, year] = date.split('.').map(Number);
+
+        const [_, dayStr, monthStr] = match;
+        const day = parseInt(dayStr, 10);
+        const month = parseInt(monthStr, 10);
         if (day < 1 || day > 31) {
             return 'День должен быть в диапазоне от 01 до 31';
         }
@@ -56,6 +65,20 @@ export const EntryForm: React.FC<EntryFormProps> = ({ onSubmit, editMode }) => {
         setDistance(0);
     };
 
+    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDate = event.target.value;
+        const parts = inputDate.split('.');
+        if (parts.length === 3) {
+          const day = formatDatePart(parseInt(parts[0], 10));
+          const month = formatDatePart(parseInt(parts[1], 10));
+          const year = parts[2];
+          setDate(`${day}.${month}.${year}`);
+        } else {
+          setDate(inputDate);
+        }
+      };
+    
+    
     return (
         <form onSubmit={handleSubmit}>
             <div className='trainig'>
@@ -64,7 +87,7 @@ export const EntryForm: React.FC<EntryFormProps> = ({ onSubmit, editMode }) => {
                     <input 
                         type="text" 
                         value={date} 
-                        onChange={(e) => setDate(e.target.value)} 
+                        onChange={handleDateChange} 
                     />
                 </div>
                 <div className='range'>
